@@ -1,0 +1,168 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+<!-- Navbar-->
+<nav class="navbar navbar-expand-lg" id="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="landing-page" id="logo"><span>Promo</span>Tourism</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span><i class="fa-solid fa-bars"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="landing-page">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gallery">Gallary</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="text" placeholder="Search">
+        <button class="btn btn-primary" type="button">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="position-fixed top-0.1 start-50 translate-middle" style="z-index: 100;" *ngIf="showMessage">
+  <div class="alert alert-success" role="alert">
+    The item has been added to cart
+  </div>
+</div>
+<h1 style="text-align: center;" id="logo"><span> Tourism </span>Product</h1>
+
+<div class="row">
+  <div *ngFor="let product of products" class="col-md-4 mb-3">
+    <div class="card">
+      <img [src]="product.Image" class="card-img-top" alt="Product Image">
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">Price: ${{ product.price }}</p>
+        <button class="btn btn-primary" (click)="addToCart(product)">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cart button to open modal -->
+<button type="button" class="btn btn-primary cart-button" (click)="openCartModal()">
+  <strong>CART</strong>
+</button>
+
+<!-- Modal for Cart -->
+<div #cartModal class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Shopping Cart</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="cartItems.length > 0; else emptyCart">
+          <ul>
+            <li *ngFor="let item of cartItems">
+              {{ item.name }} - ${{ item.price }}
+              <button class="btn btn-danger btn-sm" (click)="removeFromCart(item)">Remove</button>
+            </li>
+          </ul>
+        </div>
+        <ng-template #emptyCart>
+          <p>Cart still empty</p>
+        </ng-template>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal"
+          [disabled]="cartItems.length === 0">
+          Pay Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Payment -->
+<div id="paymentModal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-header">
+            Enter Card Details
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="mb-3">
+                <label for="cardNumber" class="form-label">Card Number</label>
+                <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9101 1121">
+              </div>
+              <div class="mb-3">
+                <label for="expiryDate" class="form-label">Expiry Date</label>
+                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
+              </div>
+              <div class="mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="text" class="form-control" id="cvv" placeholder="CVV">
+              </div>
+              <button type="button" class="btn btn-primary" [disabled]="cartItems.length === 0" data-bs-toggle="modal"
+                data-bs-target="#receiptModal">
+                Pay Now
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Receipt -->
+<div id="receiptModal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Receipt</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>Payment Successful</h6>
+        <hr>
+        <h6>Items Purchased:</h6>
+        <ul>
+          <li *ngFor="let item of cartItems">{{ item.name }} - ${{ item.price }}</li>
+        </ul>
+        <hr>
+        <p>Total Amount: ${{ calculateTotal() }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Footer -->
+<footer id="footer">
+  <h1><span>Promo</span>Tourism</h1>
+  <p>Visit Our Social Media</p>
+  <div class="social-links">
+      <i class="fa-brands fa-twitter"></i>
+      <i class="fa-brands fa-facebook"></i>
+      <i class="fa-brands fa-instagram"></i>
+  </div>
+  <div class="credit">
+      <p>Designed By <a href="#">Ratih Suarningsih</a></p>
+  </div>
+  <div class="copyright">
+      <p>&copy;Promo Tourism</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"></script>

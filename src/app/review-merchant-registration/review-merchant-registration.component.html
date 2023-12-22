@@ -1,0 +1,102 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+<!-- Navbar-->
+<nav class="navbar navbar-expand-lg" id="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="landing-page" id="logo"><span>Promo</span>Tourism</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span><i class="fa-solid fa-bars"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="landing-page">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gallery">Gallary</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="text" placeholder="Search">
+        <button class="btn btn-primary" type="button">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<!--Main Content-->
+<div class="container mt-4">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Contact Number</th>
+        <th>Email</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items; let i = index">
+        <td>{{ item._id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.contactNumber }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.companyDescription }}</td>
+        <td>{{ item.status }}</td>
+        <td>
+          <button *ngIf="!item.isApproved && item.status !== 'Rejected'" class="btn btn-success"
+            (click)="approveItem(item)">Approve</button>
+          <button *ngIf="!item.isApproved && !item.messageSent" class="btn btn-danger" data-bs-toggle="modal"
+            [attr.data-bs-target]="'#rejectModal-' + i">Reject</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Rejection Reason Modal -->
+<div *ngFor="let item of items; let i = index">
+  <div class="modal fade" [id]="'rejectModal-' + i" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rejectModalLabel">Provide Reason for Rejection</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <textarea class="form-control" rows="3" placeholder="Enter reason for rejection" #rejectReason></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button *ngIf="!item.isApproved" type="button" class="btn btn-danger"
+            (click)="rejectItem(item, rejectReason.value)" data-bs-dismiss="modal">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+  <h1><span>Promo</span>Tourism</h1>
+  <p>Visit Our Social Media</p>
+  <div class="social-links">
+      <i class="fa-brands fa-twitter"></i>
+      <i class="fa-brands fa-facebook"></i>
+      <i class="fa-brands fa-instagram"></i>
+  </div>
+  <div class="credit">
+      <p>Designed By <a href="#">Ratih Suarningsih</a></p>
+  </div>
+  <div class="copyright">
+      <p>&copy;Promo Tourism</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"></script>
